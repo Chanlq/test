@@ -102,11 +102,11 @@
         //开始按钮
         var deleteN1 = document.getElementById("deleteN1");
         var deleteN2 = document.getElementById("deleteN2");
-
+        var used = document.getElementById("used");
 
         var rate = [0.4, 0.2, 0.125, 0.07, 0.055, 0.045, 0.04, 0.035, 0.02, 0.01];
         var rateT = [false,false,false,false,false,false,false,false,false,false];
-        var num_j = 0, hasAc = false;
+        var num_j = 0, hasAc = false, usedNum = 0;
         var now = document.getElementById("now");
 
         //2.事件监听
@@ -238,7 +238,9 @@
                     now.value = num_j;
                 }
                 num_n--;
+                usedNum++;
                 yuan.value = num_n;
+                used.value = usedNum;
                 var dd = document.getElementsByClassName("dd");
                 for (var j=0;j<num_j;j++){
                     dd[j].style.backgroundColor = "red";
@@ -273,7 +275,9 @@
                         dd();
                     }
                     num_n++;
+                    usedNum--;
                     yuan.value = num_n;
+                    used.value = usedNum;
                     if (num_j === 10){
                         alert("恭喜打造成功！");
                         hasAc = true;
