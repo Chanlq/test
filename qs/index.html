@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QQ飞车手游抽车模拟</title>
+    <style>
+        * {
+            margin: 10px 10px;
+        }
+        div {
+            width: 40px;
+            height: 40px;
+            border: solid;
+            display: inline-block;
+        }
+        div p {
+            text-align: center;
+        }
+        button {
+            width: 180px;
+        }
+        fieldset {
+            width: 830px;
+        }
+        #now, label {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h3>QQ飞车手游钻石赛车工坊打造模拟计划</h3>
+<fieldset>
+    <legend>数值区</legend>
+    <label for="yuan">现有橙光能源：</label>
+    <input id="yuan" type="text" readonly style="width: 80px" value="0">
+    <label for="zuan">现有钻石：</label>
+    <input id="zuan" type="text" readonly style="width: 80px" value="0">
+    <label for="rmb">已消耗钱数：</label>
+    <input id="rmb" type="text" readonly style="width: 80px" value="0">
+</fieldset>
+<fieldset>
+    <legend>钻石充值区</legend>
+    <button id="addZ1">￥1充值钻石*10</button>
+    <button id="addZ2">￥6充值钻石*(60+2)</button>
+    <button id="addZ3">￥30充值钻石*(300+10)</button>
+    <button id="addZ4">￥68充值钻石*(680+30)</button>
+    <br>
+    <button id="addZ5">￥128充值钻石*(1280+60)</button>
+    <button id="addZ6">￥198充值钻石*(1980+120)</button>
+    <button id="addZ7">￥328充值钻石*(3280+240)</button>
+    <button id="addZ8">￥648充值钻石*(6480+500)</button>
+</fieldset>
+<fieldset>
+    <legend>橙光能源购买区</legend>
+    <button id="huang" style="width: auto">购买皇冠<br>(￥12)</button>
+    <button id="addN1">30钻石购买能源*1<br>（皇冠27钻石）</button>
+    <button id="addN2">260钻石购买能源*9<br>（皇冠234钻石）</button>
+    <button id="addN3">1280钻石购买能源*45<br>（皇冠1152钻石）</button>
+</fieldset>
+<fieldset>
+    <legend>赛车打造区</legend>
+    <div id="g01" class="dd"><p>01</p></div>
+    <div id="g02" class="dd"><p>02</p></div>
+    <div id="g03" class="dd"><p>03</p></div>
+    <div id="g04" class="dd"><p>04</p></div>
+    <div id="g05" class="dd"><p>05</p></div>
+    <div id="g06" class="dd"><p>06</p></div>
+    <div id="g07" class="dd"><p>07</p></div>
+    <div id="g08" class="dd"><p>08</p></div>
+    <div id="g09" class="dd"><p>09</p></div>
+    <div id="g10" class="dd"><p>10</p></div>
+</fieldset>
+<button id="deleteN1">打造一次（金晶能源*1）</button>
+<button id="deleteN2">打造十次（金晶能源*9）</button>
+<label for="used">累计消耗橙光能源：</label>
+<input id="used" type="text" readonly value="0" style="width: 80px">
+<label for="now">已打造完成进度：</label>
+<input id="now" type="text" readonly value="0" style="width: 20px">
+<script>
+    window.onload = function () {
+        //1.获取元素
+        var num_n = 0, num_z = 0, num_r = 0;
+        var isHuang = false;
+        //数值区
+        var yuan = document.getElementById("yuan");
+        var zuan = document.getElementById("zuan");
+        var rmb = document.getElementById("rmb");
+        //钻石充值区
+        var addZ1 = document.getElementById("addZ1");
+        var addZ2 = document.getElementById("addZ2");
+        var addZ3 = document.getElementById("addZ3");
+        var addZ4 = document.getElementById("addZ4");
+        var addZ5 = document.getElementById("addZ5");
+        var addZ6 = document.getElementById("addZ6");
+        var addZ7 = document.getElementById("addZ7");
+        var addZ8 = document.getElementById("addZ8");
+        //橙光能源购买区
+        var huang = document.getElementById("huang");
+        var addN1 = document.getElementById("addN1");
+        var addN2 = document.getElementById("addN2");
+        var addN3 = document.getElementById("addN3");
+        //开始按钮
+        var deleteN1 = document.getElementById("deleteN1");
+        var deleteN2 = document.getElementById("deleteN2");
+
+
+        var rate = [0.4, 0.2, 0.125, 0.07, 0.055, 0.045, 0.04, 0.035, 0.02, 0.01];
+        var rateT = [false,false,false,false,false,false,false,false,false,false];
+        var num_j = 0, hasAc = false;
+        var now = document.getElementById("now");
+
+        //2.事件监听
+        addZ1.onclick = function () {
+            num_z += 10;
+            num_r += 1;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ2.onclick = function () {
+            num_z += (60+2);
+            num_r += 6;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ3.onclick = function () {
+            num_z += (300+10);
+            num_r += 30;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ4.onclick = function () {
+            num_z += (680+30);
+            num_r += 68;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ5.onclick = function () {
+            num_z += (1280+60);
+            num_r += 128;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ6.onclick = function () {
+            num_z += (1980+120);
+            num_r += 198;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ7.onclick = function () {
+            num_z += (3280+240);
+            num_r += 328;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        addZ8.onclick = function () {
+            num_z += (6480+500);
+            num_r += 648;
+            zuan.value = num_z;
+            rmb.value = num_r;
+        };
+        huang.onclick = function (){
+            num_r += 12;
+            isHuang = true;
+            rmb.value = num_r;
+            this.innerHTML = "皇冠√";
+            this.disabled = true;
+            alert("皇冠已购买");
+        };
+        addN1.onclick = function () {
+            if (isHuang){
+                if (num_z < 27){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 27;
+            }else{
+                if (num_z < 30){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 30;
+            }
+            num_n += 1;
+            yuan.value = num_n;
+            zuan.value = num_z;
+        };
+        addN2.onclick = function () {
+            if (isHuang){
+                if (num_z < 234){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 234;
+            }else{
+                if (num_z < 260){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 260;
+            }
+            num_n += 9;
+            yuan.value = num_n;
+            zuan.value = num_z;
+        };
+        addN3.onclick = function () {
+            if (isHuang){
+                if (num_z < 1152){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 1152;
+            }else{
+                if (num_z < 1280){
+                    alert("钻石不足，请充值！");
+                    return;
+                }
+                num_z -= 1280;
+            }
+            num_n += 45;
+            yuan.value = num_n;
+            zuan.value = num_z;
+        };
+
+        //重头戏：开始打造
+
+        function isSuccess(num,r) {
+            return (num <= r);
+        }
+
+        function dd(){
+            if (isSuccess(Math.random(), 0.0000000875)){
+                alert("恭喜，你直接获得永久A车了！");
+                hasAc = true;
+            }else{
+                if (isSuccess(Math.random(), rate[num_j])){
+                    rateT[num_j] = true;
+                    num_j++;
+                    now.value = num_j;
+                }
+                num_n--;
+                yuan.value = num_n;
+                var dd = document.getElementsByClassName("dd");
+                for (var j=0;j<num_j;j++){
+                    dd[j].style.backgroundColor = "red";
+                }
+            }
+        }
+
+        deleteN1.onclick =  function () {
+            if (hasAc){
+                alert("您已拥有永久A车，无需继续打造！");
+            }else{
+                if (num_n===0){
+                    alert("能源不足，请购买！");
+                }else{
+                    dd();
+                    if (num_j === 10){
+                        alert("恭喜打造成功！");
+                        hasAc = true;
+                    }
+                }
+            }
+        };
+
+        deleteN2.onclick =  function () {
+            if (hasAc){
+                alert("您已拥有永久A车，无需继续打造！");
+            }else{
+                if (num_n <9){
+                    alert("能源不足，请购买！");
+                }else{
+                    for (var i=0;i<10;i++){
+                        dd();
+                    }
+                    num_n++;
+                    yuan.value = num_n;
+                    if (num_j === 10){
+                        alert("恭喜打造成功！");
+                        hasAc = true;
+                    }
+                }
+            }
+        }
+    };
+</script>
+</body>
+</html>
